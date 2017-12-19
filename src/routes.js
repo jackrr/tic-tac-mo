@@ -1,7 +1,5 @@
 const routesMap = {
-  HOME: '/',
-  PICS: '/pics',
-  GALLERY_IMAGE: '/pics/:galleryId/:imageIndex'
+  HOME: '/'
 }
 
 export default routesMap
