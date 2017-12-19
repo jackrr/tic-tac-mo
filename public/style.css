@@ -1,0 +1,25 @@
+body {
+  background-color: #f9eff1;
+  box-sizing: border-box;
+}
+
+.grid-row {
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  margin: 1rem;
+}
+
+.board-row {
+  display: flex;
+  width: 6rem;
+}
+
+.board-slot {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid black;
+}
+
