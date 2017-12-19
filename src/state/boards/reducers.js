@@ -1,4 +1,4 @@
-import { move } from 'state/boards/actions'
+import { move, illegalMove } from 'state/boards/actions'
 
 const N_ARR = [0, 1, 2]
 
@@ -28,9 +28,16 @@ const boards = (state = initialBoards, action) => {
         ...state,
         [boardId]: {
           ...state[boardId],
+          error: null,
           [indexesToBoardId(x, y)]: piece
         }
       }
+    case illegalMove.toString():
+      return {
+        ...state,
+        error: action.payload.message
+      }
+
     default:
       return state
   }

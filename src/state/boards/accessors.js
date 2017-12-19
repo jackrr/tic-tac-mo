@@ -79,3 +79,12 @@ export const boardsInRowsAccessor = (state) => {
   return grid
 }
 
+export const boardByIdAccessor = (state, id) => {
+  const board = getBoards(state)[id]
+  return {
+    id,
+    winner: boardValue(board),
+    grid: structuredBoard(board)
+  }
+}
+

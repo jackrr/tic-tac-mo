@@ -1,8 +1,9 @@
-import { nextPlayer } from 'state/players/actions'
+import { nextPlayer, playerWon } from 'state/players/actions'
 
 const initialPlayers = {
   players: ['X', 'O'],
-  playerIndex: 0
+  playerIndex: 0,
+  winnerIndex: null
 }
 
 const players = (state = initialPlayers, action) => {
@@ -11,6 +12,11 @@ const players = (state = initialPlayers, action) => {
       return {
         ...state,
         playerIndex: (state.playerIndex + 1) % state.players.length
+      }
+    case playerWon.toString():
+      return {
+        ...state,
+        winnerIndex: state.players.indexOf(action.payload.piece)
       }
     default:
       return state

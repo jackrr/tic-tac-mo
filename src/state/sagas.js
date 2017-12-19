@@ -1,16 +1,21 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects'
-import { play, move } from 'state/boards/actions'
-import { nextPlayer } from 'state/players/actions'
+import { play, move, illegalMove } from 'state/boards/actions'
+import { nextPlayer, playerWon } from 'state/players/actions'
 import { currentPieceAccessor } from 'state/players/accessors'
-import { gridWinnerAccessor } from 'state/boards/accessors'
+import { gridWinnerAccessor, boardByIdAccessor } from 'state/boards/accessors'
 
 function* handlePlay(action) {
+  const state = yield select()
+  const { boardId, x, y } = action.payload
+  const board = boardByIdAccessor(state, boardId)
+  if (board.winner) return yield put(illegalMove({ message: 'Board already won' }))
+  if (board.grid[x][y]) return yield put(illegalMove({ message: 'Slot already full' }))
+
   const piece = yield select(currentPieceAccessor)
-  // todo: check if move is legal
   yield put(move({ ...action.payload, piece }))
   const winner = yield select(gridWinnerAccessor)
   if (winner) {
-    alert(`${winner} won!`)
+    yield put(playerWon({ piece: winner }))
   } else {
     yield put(nextPlayer())
   }
