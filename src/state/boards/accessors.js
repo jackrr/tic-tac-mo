@@ -21,24 +21,22 @@ const structuredBoard = board => {
   return grid
 }
 
-function rowsWinner(board) {
+function checkWinner(board, direction) {
   const keys = [0, 1, 2]
-  return keys.reduce((winner, x) => {
-    const first = board[`${x}0`]
-    const won = keys.every(y => board[`${x}${y}`] === first)
-    if (first && won) return first
+  let out =  keys.reduce((winner, primaryIndex) => {
+    if (winner) return winner
+    const value = direction === 'row' ? board[`${primaryIndex}0`] : board[`0${primaryIndex}`]
+    const won = keys.every(secondaryIndex => {
+      if (direction === 'row') {
+        return board[`${primaryIndex}${secondaryIndex}`] === value
+      } else {
+        return board[`${secondaryIndex}${primaryIndex}`] === value
+      }
+    })
+    if (won) return value
     return winner
   }, null)
-}
-
-function colsWinner(board) {
-  const keys = [0, 1, 2]
-  return keys.reduce((winner, y) => {
-    const first = board[`0${y}`]
-    const won = keys.every(x => board[`${x}${y}`] === first)
-    if (first && won) return first
-    return winner
-  }, null)
+  return out
 }
 
 function diagWinner(board) {
@@ -52,7 +50,7 @@ function diagWinner(board) {
 }
 
 function boardValue(board) {
-  rowsWinner(board) || colsWinner(board) || diagWinner(board)
+  return checkWinner(board, 'row') || checkWinner(board, 'col') || diagWinner(board)
 }
 
 export function gridWinnerAccessor(state) {
